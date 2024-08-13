@@ -9,6 +9,7 @@ size = (game_width, game_height)
 game = pygame.display.set_mode(size)
 speed = 3
 
+
 class Obstacle(pygame.sprite.Sprite):
 
     def __init__(self):
