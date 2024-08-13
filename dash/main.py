@@ -1,9 +1,10 @@
+import math
+
 import pygame
 from pygame.locals import *
-import random
-import math
-import Player
+
 import Obstacle
+import Player
 
 pygame.init()
 
