@@ -198,7 +198,8 @@ def start_screen():
     # Display the start screen image
     game.blit(start_screen_image, (0, 0))
 
-    
+    pygame.mixer.music.load("music/intro_music.mp3")
+    pygame.mixer.music.play(0)
 
     # Display a "Press any key to start" message
     font = pygame.font.Font(pygame.font.get_default_font(), 32)
@@ -216,6 +217,8 @@ def start_screen():
                 pygame.quit()
                 exit()
             if event.type == KEYDOWN:
+                pygame.mixer.music.stop()   # stop the music playback
+                pygame.mixer.music.unload()  # unload music from mixer
                 waiting = False
 
 
@@ -269,7 +272,9 @@ start_screen()
 quit = False
 
 while not quit:
-    # set the image for the sky
+    # add music
+    pygame.mixer.music.load("music/game_bgm.mp3")
+    pygame.mixer.music.play(0)
     sky = pygame.image.load('images/bg/sky.png').convert_alpha()
     num_bg_tiles = math.ceil(game_width / sky.get_width()) + 1
 
@@ -306,11 +311,11 @@ while not quit:
     fps = 90
     quit = False
     while not quit:
-
         clock.tick(fps)
 
         for event in pygame.event.get():
             if event.type == QUIT:
+                pygame.mixer.music.stop()
                 quit = True
 
             # press SPACE to jump
@@ -400,8 +405,7 @@ while not quit:
         # gameover
         gameover = player.health == 0
         while gameover and not quit:
-
-            # display game over message
+            pygame.mixer.music.stop()
             red = (255, 0, 0)
             pygame.draw.rect(game, red, (0, 50, game_width, 100))
             font = pygame.font.Font(pygame.font.get_default_font(), 16)
@@ -418,7 +422,7 @@ while not quit:
                 # get the player's input (Y or N)
                 if event.type == KEYDOWN:
                     if event.key == K_y:
-                        # reset the game
+                        pygame.mixer.music.play(0)
                         gameover = False
                         speed = 3
                         score = 0
