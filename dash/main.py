@@ -198,6 +198,8 @@ def start_screen():
     # Display the start screen image
     game.blit(start_screen_image, (0, 0))
 
+    
+
     # Display a "Press any key to start" message
     font = pygame.font.Font(pygame.font.get_default_font(), 32)
     text = font.render('Press any key to start', True, (255, 255, 255))
@@ -274,8 +276,6 @@ while not quit:
     # set the images for the parallax background
     bgs = []
     bgs.append(pygame.image.load('images/bg/bg.png').convert_alpha())
-    #bgs.append(pygame.image.load('images/bg/trees.png').convert_alpha())
-    #bgs.append(pygame.image.load('images/bg/bushes.png').convert_alpha())
 
     # for the parallax effect, determine how much each layer will scroll
     parallax = []
