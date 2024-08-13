@@ -388,8 +388,9 @@ while not quit:
 
         # display the score
         black = (0, 0, 0)
+        white = "#FFFFFF"
         font = pygame.font.Font(pygame.font.get_default_font(), 16)
-        text = font.render(f'Score: {score}', True, black)
+        text = font.render(f'Score: {score}', True, white)
         text_rect = text.get_rect()
         text_rect.center = (game_width - 50, 20)
         game.blit(text, text_rect)
