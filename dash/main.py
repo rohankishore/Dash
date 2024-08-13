@@ -7,7 +7,7 @@ pygame.init()
 
 # create the game window
 game_width = 1000
-game_height = 400
+game_height = 550
 size = (game_width, game_height)
 game = pygame.display.set_mode(size)
 pygame.display.set_caption('Dash')
@@ -16,6 +16,8 @@ pygame.display.set_caption('Dash')
 score = 0
 speed = 3
 
+start_screen_image = pygame.image.load("images/bg/banner.png").convert_alpha()
+start_screen_image = pygame.transform.scale(start_screen_image, (game_width, game_height))
 
 class Player(pygame.sprite.Sprite):
     def __init__(self):
@@ -192,22 +194,54 @@ class Obstacle(pygame.sprite.Sprite):
         self.y = game_height - self.image.get_height()
 
 
-def show_start_screen():
-    start = True
+def start_screen():
+    # Display the start screen image
+    game.blit(start_screen_image, (0, 0))
 
-    while start:
-        # Fill the background with a color or an image
-        game.fill((0, 150, 150))  # Example: Fill with a teal color
+    # Display a "Press any key to start" message
+    font = pygame.font.Font(pygame.font.get_default_font(), 32)
+    text = font.render('Press any key to start', True, (255, 255, 255))
+    text_rect = text.get_rect(center=(game_width / 2, game_height - 50))
+    game.blit(text, text_rect)
 
-        # Display the title
-        title_font = pygame.font.Font(pygame.font.get_default_font(), 48)
-        title_text = title_font.render('Dash', True, (255, 255, 255))
-        title_rect = title_text.get_rect(center=(game_width / 2, game_height / 2 - 50))
-        game.blit(title_text, title_rect)
+    pygame.display.update()
 
-        # Display the instructions
-        instructions_font = pygame.font.Font(pygame.font.get_default_font(), 24)
-        instructions_text = instructions_font.render('Press SPACE to Start', True, (255, 255, 255))
+    # Wait for the player to press a key
+    waiting = True
+    while waiting:
+        for event in pygame.event.get():
+            if event.type == QUIT:
+                pygame.quit()
+                exit()
+            if event.type == KEYDOWN:
+                waiting = False
+
+
+def show_story():
+    story_texts = [
+        "In a world where obstacles are everywhere,",
+        "a lone runner must dash through danger,",
+        "avoiding every obstacle in their path,",
+        "to achieve the highest score and prove their skill.",
+        "Are you ready to take on the challenge?"
+    ]
+
+    for text in story_texts:
+        show_story_screen(text)
+
+
+def show_story_screen(text):
+    showing_story = True
+    while showing_story:
+        game.fill((0, 0, 0))  # Background color (black)
+
+        # Display the story text
+        font = pygame.font.Font(pygame.font.get_default_font(), 24)
+        story_text = font.render(text, True, (255, 255, 255))
+        text_rect = story_text.get_rect(center=(game_width / 2, game_height / 2))
+        game.blit(story_text, text_rect)
+
+        instructions_text = font.render('Press SPACE to continue', True, (200, 200, 200))
         instructions_rect = instructions_text.get_rect(center=(game_width / 2, game_height / 2 + 50))
         game.blit(instructions_text, instructions_rect)
 
@@ -218,15 +252,17 @@ def show_start_screen():
                 pygame.quit()
                 exit()
             if event.type == KEYDOWN and event.key == K_SPACE:
-                start = False
-
+                showing_story = False
 
 # game loop
 clock = pygame.time.Clock()
 fps = 90
 
+#show_story()
+
+
 # Show the start screen
-show_start_screen()
+start_screen()
 
 quit = False
 
@@ -237,9 +273,9 @@ while not quit:
 
     # set the images for the parallax background
     bgs = []
-    bgs.append(pygame.image.load('images/bg/mountains.png').convert_alpha())
-    bgs.append(pygame.image.load('images/bg/trees.png').convert_alpha())
-    bgs.append(pygame.image.load('images/bg/bushes.png').convert_alpha())
+    bgs.append(pygame.image.load('images/bg/bg.png').convert_alpha())
+    #bgs.append(pygame.image.load('images/bg/trees.png').convert_alpha())
+    #bgs.append(pygame.image.load('images/bg/bushes.png').convert_alpha())
 
     # for the parallax effect, determine how much each layer will scroll
     parallax = []
