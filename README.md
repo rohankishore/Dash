@@ -45,3 +45,6 @@ python main.py
 - Implement drone obstacles
 - Add music
 - Add difficulty levels
+
+# Credits
+- Intro Music: https://youtu.be/V5OEjMHo_B4?si=ViW57E_VrmN51i9Q
