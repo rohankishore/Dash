@@ -43,7 +43,7 @@ python main.py
 
 # Roadmap
 - Implement drone obstacles
-- Add music
+- <strike> Add music </strike>
 - Add difficulty levels
 
 # Credits
