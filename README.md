@@ -14,10 +14,8 @@
 
 # Game Screenshots
 
-![image](https://github.com/user-attachments/assets/b60b6749-fea9-44b2-b55d-00dd890ea346)
-
 ![image](https://github.com/user-attachments/assets/6449af85-6f4b-4714-899e-f4022515fbef)
-
+![image](https://github.com/user-attachments/assets/b60b6749-fea9-44b2-b55d-00dd890ea346)
 
 # How to Play?
 
@@ -43,7 +41,7 @@ python main.py
 
 # Roadmap
 - Implement drone obstacles
-- Add music
+- <strike> Add music </strike>
 - Add difficulty levels
 
 # Credits
