@@ -14,10 +14,13 @@ size = (game_width, game_height)
 game = pygame.display.set_mode(size)
 pygame.display.set_caption('Dash')
 
-# game variables
-score = 0
-speed = 3
-obstacles_cleared = 0  # Counter for obstacles cleared
+
+try:
+    with open("data/obstacle_count.txt", "r") as obstacle_file:
+        obstacles_cleared = int(obstacle_file.read())
+
+except ValueError:
+    obstacles_cleared = 0
 
 try:
     with open("data/level.txt", "r") as level_file:
@@ -26,8 +29,12 @@ try:
 except ValueError:
     level = 1
 
-obstacles_to_next_level = 2  # Initial number of obstacles to level.txt up
-base_obstacles = 10
+base_obstacles = 5
+obstacles_to_next_level = base_obstacles + (level * level)
+
+# game variables
+score = 0
+speed = 3 + (level*5)
 
 start_screen_image = pygame.image.load("images/bg/banner.png").convert_alpha()
 start_screen_image = pygame.transform.scale(start_screen_image, (game_width, game_height))
@@ -187,12 +194,13 @@ while not quit:
             obstacles_cleared += 1  # Increment obstacles cleared
             obstacle.reset()
 
-            # Increase the speed after clearing 2 obstacles
-            # but the max it can go up to is 10
-            if score % 2 == 0 and speed < 10:
-                speed += 1
+            speed = 3 + (level*0.2)
+            #if score % 2 == 0 and speed < 10:
+            #    speed += 1
 
             # Check if it's time to level.txt up
+            # When the level is updated
+            # When the level is updated
             if obstacles_cleared >= obstacles_to_next_level:
                 level += 1  # Increase the level
                 try:
@@ -201,10 +209,19 @@ while not quit:
                         level_file.write(level_str)
                 except Exception as e:
                     print(e)
+
                 show_board(level)  # Pass the current level to the function
-                obstacles_cleared = 0  # Reset the obstacle counter
-                obstacles_to_next_level = (2 + int(math.log(level + 1,
-                                                            2))) * 2  # Increase the number of obstacles needed for the next level logarithmically
+                obstacles_cleared = 0
+
+                # Update speed based on new level
+                speed = 3 + (level * 0.2)
+
+                # Update obstacles to next level
+                base_obstacles = 2
+                obstacles_to_next_level = base_obstacles + (level * level)
+                with open("data/obstacle_count.txt", "w") as obstacle_file:
+                    obstacles_to_next_level_str = str(obstacles_to_next_level)
+                    obstacle_file.write(obstacles_to_next_level_str)
                 print(obstacles_to_next_level)
 
         # Handle collisions between player and obstacles
@@ -270,7 +287,7 @@ while not quit:
                     if event.key == K_y:
                         pygame.mixer.music.play(0)
                         gameover = False
-                        speed = 3
+                        speed = 3 + (level*0.2)
                         score = 0
                         obstacles_cleared = 0  # Reset the counter
                         level = 1  # Reset the level.txt
