@@ -14,13 +14,7 @@ size = (game_width, game_height)
 game = pygame.display.set_mode(size)
 pygame.display.set_caption('Dash')
 
-
-try:
-    with open("data/obstacle_count.txt", "r") as obstacle_file:
-        obstacles_cleared = int(obstacle_file.read())
-
-except ValueError:
-    obstacles_cleared = 0
+obstacles_cleared = 0
 
 try:
     with open("data/level.txt", "r") as level_file:
@@ -220,9 +214,6 @@ while not quit:
                 # Update obstacles to next level
                 base_obstacles = 2
                 obstacles_to_next_level = base_obstacles + ((level * level)//2)
-                with open("data/obstacle_count.txt", "w") as obstacle_file:
-                    obstacles_to_next_level_str = str(obstacles_to_next_level)
-                    obstacle_file.write(obstacles_to_next_level_str)
                 print(obstacles_to_next_level)
 
         # Handle collisions between player and obstacles
