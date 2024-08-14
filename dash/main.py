@@ -192,6 +192,12 @@ while not quit:
         # add to score and reset the obstacle when it goes off screen
         if obstacle.x < obstacle.image.get_width() * -1:
             score += 1
+            try:
+                with open("data/score.txt", "w") as score_file:
+                    score_file.write((str(score)))
+
+            except ValueError:
+                score = 0
             obstacles_cleared += 1  # Increment obstacles cleared
             obstacle.reset()
 
