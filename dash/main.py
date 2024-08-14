@@ -1,11 +1,9 @@
 import math
-
 import pygame
 from pygame.locals import *
 
 import Obstacle
 import Player
-
 
 pygame.init()
 
@@ -19,9 +17,14 @@ pygame.display.set_caption('Dash')
 # game variables
 score = 0
 speed = 3
+obstacles_cleared = 0  # Counter for obstacles cleared
+level = 1  # Start with level 1
 
 start_screen_image = pygame.image.load("images/bg/banner.png").convert_alpha()
 start_screen_image = pygame.transform.scale(start_screen_image, (game_width, game_height))
+
+board_image = pygame.image.load("images/obstacles/board.png").convert_alpha()  # Load the board image
+board_image = pygame.transform.scale(board_image, (game_width, game_height))  # Scale it if needed
 
 
 def start_screen():
@@ -51,14 +54,22 @@ def start_screen():
                 pygame.mixer.music.unload()  # unload music from mixer
                 waiting = False
 
+
+def show_board(level):
+    font = pygame.font.Font(pygame.font.get_default_font(), 48)
+    text = font.render(f'Level {level}', True, (255, 255, 255))
+    text_rect = text.get_rect(center=(game_width / 2, game_height / 2))
+
+    # Draw the board image
+    game.blit(board_image, (0, 0))
+    game.blit(text, text_rect)
+    pygame.display.update()
+    pygame.time.wait(2000)  # Show the board image for 2 seconds
+
+
 # game loop
 clock = pygame.time.Clock()
 fps = 90
-
-# show_story()
-
-
-
 
 # Show the start screen
 start_screen()
@@ -70,7 +81,7 @@ while not quit:
     pygame.mixer.music.load("music/game_bgm.mp3")
 
     # Set the number of channels
-    pygame.mixer.set_num_channels(10) # increase number of audio channels
+    pygame.mixer.set_num_channels(10)  # Increase number of audio channels
 
     # Play the sounds on different channels
     bgm_channel = pygame.mixer.Channel(0)
@@ -79,33 +90,31 @@ while not quit:
     bgm_channel.play(pygame.mixer.Sound('music/game_bgm.mp3'))
 
     # Set volumes
-    bgm_channel.set_volume(0.1)  # Set the background music to 50% volume
-
-    # If you want to control the volume of the music being played by pygame.mixer.music
+    bgm_channel.set_volume(0.1)  # Set the background music to 10% volume
     pygame.mixer.music.set_volume(0.3)  # Set the music volume to 30%
 
     pygame.mixer.music.play(0)
     sky = pygame.image.load('images/bg/sky.png').convert_alpha()
     num_bg_tiles = math.ceil(game_width / sky.get_width()) + 1
 
-    # set the images for the parallax background
+    # Set the images for the parallax background
     bgs = []
     bgs.append(pygame.image.load('images/bg/bg.png').convert_alpha())
 
-    # for the parallax effect, determine how much each layer will scroll
+    # For the parallax effect, determine how much each layer will scroll
     parallax = []
     for x in range(len(bgs)):
         parallax.append(0)
 
-    # create the player
+    # Create the player
     player = Player.Player()
 
-    # create the obstacle
+    # Create the obstacle
     obstacles_group = pygame.sprite.Group()
     obstacle = Obstacle.Obstacle()
     obstacles_group.add(obstacle)
 
-    # load the heart images for representing health
+    # Load the heart images for representing health
     heart_sprites = []
     heart_sprite_index = 0
     for i in range(8):
@@ -116,7 +125,7 @@ while not quit:
         heart_sprite = pygame.transform.scale(heart_sprite, (new_width, new_height))
         heart_sprites.append(heart_sprite)
 
-    # game loop
+    # Game loop
     clock = pygame.time.Clock()
     fps = 90
     quit = False
@@ -128,91 +137,98 @@ while not quit:
                 pygame.mixer.music.stop()
                 quit = True
 
-            # press SPACE to jump
+            # Press SPACE to jump
             if event.type == KEYDOWN and event.key == K_SPACE or event.type == KEYDOWN and event.key == K_UP or event.type == KEYDOWN and event.key == K_w:
                 player.jump()
 
-        # draw the sky
+        # Draw the sky
         for i in range(num_bg_tiles):
             game.blit(sky, (i * sky.get_width(), 0))
 
-        # draw each background layer
+        # Draw each background layer
         for i in range(len(bgs)):
-
             bg = bgs[i]
-
             for j in range(num_bg_tiles):
                 game.blit(bg, (j * bg.get_width() + parallax[i], 0))
 
-        # update how much each layer will scroll
+        # Update how much each layer will scroll
         for i in range(len(parallax)):
-
-            # top layer should scroll faster
+            # Top layer should scroll faster
             parallax[i] -= i + 1
-
             if abs(parallax[i]) > bgs[i].get_width():
                 parallax[i] = 0
 
-        # draw the player
+        # Draw the player
         player.draw()
 
-        # update the sprite and position of the player
+        # Update the sprite and position of the player
         player.update()
 
-        # draw the obstacle
+        # Draw the obstacle
         obstacle.draw()
 
-        # update the position of the obstacle
+        # Update the position of the obstacle
         obstacle.update()
 
-        # add to score and reset the obstacle when it goes off screen
+        # Add to score and reset the obstacle when it goes off screen
         if obstacle.x < obstacle.image.get_width() * -1:
-
             score += 1
+            obstacles_cleared += 1  # Increment obstacles cleared
             obstacle.reset()
 
-            # increase the speed after clearing 2 obstacles
+            # Increase the speed after clearing 2 obstacles
             # but the max it can go up to is 10
             if score % 2 == 0 and speed < 10:
                 speed += 1
+
+            # Show the board image every 10 obstacles cleared
+            if obstacles_cleared % 10 == 0:
+                level += 1  # Increase the level
+                show_board(level)  # Pass the current level to the function
 
         # Handle collisions between player and obstacles
         if pygame.sprite.spritecollide(player, obstacles_group, True, pygame.sprite.collide_mask):
             player.health -= 1
             player.invincibility_frame = 30
 
-            # remove obstacle and replace with a new one
+            # Remove obstacle and replace with a new one
             obstacles_group.remove(obstacle)
             obstacle = Obstacle.Obstacle()
             obstacles_group.add(obstacle)
 
-        # display a heart per remaining health
+        # Display a heart per remaining health
         for life in range(player.health):
             heart_sprite = heart_sprites[int(heart_sprite_index)]
             x_pos = 10 + life * (heart_sprite.get_width() + 10)
             y_pos = 10
             game.blit(heart_sprite, (x_pos, y_pos))
 
-        # increment the index for the next heart sprite
-        # use 0.1 to make the sprite change after 10 frames
+        # Increment the index for the next heart sprite
+        # Use 0.1 to make the sprite change after 10 frames
         heart_sprite_index += 0.1
 
-        # set index back to 0 after the last heart sprite is drawn
+        # Set index back to 0 after the last heart sprite is drawn
         if heart_sprite_index >= len(heart_sprites):
             heart_sprite_index = 0
 
-        # display the score
+        # Display the score and level
         black = (0, 0, 0)
         white = "#FFFFFF"
         font = pygame.font.Font(pygame.font.get_default_font(), 16)
-        text = font.render(f'Score: {score}', True, white)
-        text_rect = text.get_rect()
-        text_rect.center = (game_width - 50, 20)
-        game.blit(text, text_rect)
+        text_score = font.render(f'Score: {score}', True, white)
+        text_rect_score = text_score.get_rect()
+        text_rect_score.center = (game_width - 50, 20)
+
+        text_level = font.render(f'Level: {level}', True, white)
+        text_rect_level = text_level.get_rect()
+        text_rect_level.center = (game_width - 50, 40)
+
+        game.blit(text_score, text_rect_score)
+        game.blit(text_level, text_rect_level)
 
         pygame.display.update()
 
-        # gameover
+        # Game over
         gameover = player.health == 0
         while gameover and not quit:
             pygame.mixer.music.stop()
@@ -225,17 +241,18 @@ while not quit:
             game.blit(text, text_rect)
 
             for event in pygame.event.get():
-
                 if event.type == QUIT:
                     quit = True
 
-                # get the player's input (Y or N)
+                # Get the player's input (Y or N)
                 if event.type == KEYDOWN:
                     if event.key == K_y:
                         pygame.mixer.music.play(0)
                         gameover = False
                         speed = 3
                         score = 0
+                        obstacles_cleared = 0  # Reset the counter
+                        level = 1  # Reset the level
                         player = Player.Player()
                         obstacle = Obstacle.Obstacle()
                         obstacles_group.empty()
