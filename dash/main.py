@@ -7,36 +7,6 @@ import Obstacle
 import Player
 
 
-class LaserGrid(pygame.sprite.Sprite):
-    def __init__(self, x, y, width, height, on_time, off_time):
-        super().__init__()
-        self.image_on = pygame.Surface((width, height))
-        self.image_on.fill((255, 0, 0))  # Red color for the laser
-        self.image_off = pygame.Surface((width, height))
-        self.image_off.fill((0, 0, 0))  # Black color for when the laser is off
-        self.image = self.image_on
-
-        self.rect = self.image.get_rect()
-        self.rect.topleft = (x, y)
-
-        self.on_time = on_time
-        self.off_time = off_time
-        self.timer = 0
-        self.laser_on = True
-
-    def update(self):
-        self.timer += 1
-
-        if self.laser_on and self.timer > self.on_time:
-            self.laser_on = False
-            self.timer = 0
-            self.image = self.image_off
-        elif not self.laser_on and self.timer > self.off_time:
-            self.laser_on = True
-            self.timer = 0
-            self.image = self.image_on
-
-
 pygame.init()
 
 # create the game window
@@ -81,45 +51,6 @@ def start_screen():
                 pygame.mixer.music.unload()  # unload music from mixer
                 waiting = False
 
-
-def show_story():
-    story_texts = [
-        "In a world where obstacles are everywhere,",
-        "a lone runner must dash through danger,",
-        "avoiding every obstacle in their path,",
-        "to achieve the highest score and prove their skill.",
-        "Are you ready to take on the challenge?"
-    ]
-
-    for text in story_texts:
-        show_story_screen(text)
-
-
-def show_story_screen(text):
-    showing_story = True
-    while showing_story:
-        game.fill((0, 0, 0))  # Background color (black)
-
-        # Display the story text
-        font = pygame.font.Font(pygame.font.get_default_font(), 24)
-        story_text = font.render(text, True, (255, 255, 255))
-        text_rect = story_text.get_rect(center=(game_width / 2, game_height / 2))
-        game.blit(story_text, text_rect)
-
-        instructions_text = font.render('Press SPACE to continue', True, (200, 200, 200))
-        instructions_rect = instructions_text.get_rect(center=(game_width / 2, game_height / 2 + 50))
-        game.blit(instructions_text, instructions_rect)
-
-        pygame.display.update()
-
-        for event in pygame.event.get():
-            if event.type == QUIT:
-                pygame.quit()
-                exit()
-            if event.type == KEYDOWN and event.key == K_SPACE:
-                showing_story = False
-
-
 # game loop
 clock = pygame.time.Clock()
 fps = 90
@@ -139,7 +70,7 @@ while not quit:
     pygame.mixer.music.load("music/game_bgm.mp3")
 
     # Set the number of channels
-    pygame.mixer.set_num_channels(10)  # default is 8
+    pygame.mixer.set_num_channels(10) # increase number of audio channels
 
     # Play the sounds on different channels
     bgm_channel = pygame.mixer.Channel(0)
@@ -172,8 +103,6 @@ while not quit:
     # create the obstacle
     obstacles_group = pygame.sprite.Group()
     obstacle = Obstacle.Obstacle()
-    laser_grid = LaserGrid(x=game_width, y=200, width=100, height=10, on_time=60, off_time=60)
-    obstacles_group.add(laser_grid)
     obstacles_group.add(obstacle)
 
     # load the heart images for representing health
@@ -255,7 +184,6 @@ while not quit:
             # remove obstacle and replace with a new one
             obstacles_group.remove(obstacle)
             obstacle = Obstacle.Obstacle()
-            obstacles_group.add(laser_grid)
             obstacles_group.add(obstacle)
 
         # display a heart per remaining health
@@ -291,7 +219,7 @@ while not quit:
             red = (255, 0, 0)
             pygame.draw.rect(game, red, (0, 50, game_width, 100))
             font = pygame.font.Font(pygame.font.get_default_font(), 16)
-            text = font.render('Game over. Play again? (Enter Y or N)', True, black)
+            text = font.render('Game over. Play again? (Enter Y or N)', True, white)
             text_rect = text.get_rect()
             text_rect.center = (game_width / 2, 100)
             game.blit(text, text_rect)
@@ -308,8 +236,8 @@ while not quit:
                         gameover = False
                         speed = 3
                         score = 0
-                        player = Player()
-                        obstacle = Obstacle()
+                        player = Player.Player()
+                        obstacle = Obstacle.Obstacle()
                         obstacles_group.empty()
                         obstacles_group.add(obstacle)
                     elif event.key == K_n:
