@@ -30,7 +30,8 @@ except ValueError:
     level = 1
 
 base_obstacles = 5
-obstacles_to_next_level = base_obstacles + (level * level)
+obstacles_to_next_level = base_obstacles + ((level * level)//2)
+print(obstacles_to_next_level)
 
 # game variables
 score = 0
@@ -218,7 +219,7 @@ while not quit:
 
                 # Update obstacles to next level
                 base_obstacles = 2
-                obstacles_to_next_level = base_obstacles + (level * level)
+                obstacles_to_next_level = base_obstacles + ((level * level)//2)
                 with open("data/obstacle_count.txt", "w") as obstacle_file:
                     obstacles_to_next_level_str = str(obstacles_to_next_level)
                     obstacle_file.write(obstacles_to_next_level_str)
