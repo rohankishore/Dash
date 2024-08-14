@@ -3,8 +3,39 @@ import math
 import pygame
 from pygame.locals import *
 
-from dash import Obstacle
+import Obstacle
 import Player
+
+
+class LaserGrid(pygame.sprite.Sprite):
+    def __init__(self, x, y, width, height, on_time, off_time):
+        super().__init__()
+        self.image_on = pygame.Surface((width, height))
+        self.image_on.fill((255, 0, 0))  # Red color for the laser
+        self.image_off = pygame.Surface((width, height))
+        self.image_off.fill((0, 0, 0))  # Black color for when the laser is off
+        self.image = self.image_on
+
+        self.rect = self.image.get_rect()
+        self.rect.topleft = (x, y)
+
+        self.on_time = on_time
+        self.off_time = off_time
+        self.timer = 0
+        self.laser_on = True
+
+    def update(self):
+        self.timer += 1
+
+        if self.laser_on and self.timer > self.on_time:
+            self.laser_on = False
+            self.timer = 0
+            self.image = self.image_off
+        elif not self.laser_on and self.timer > self.off_time:
+            self.laser_on = True
+            self.timer = 0
+            self.image = self.image_on
+
 
 pygame.init()
 
@@ -96,14 +127,32 @@ fps = 90
 # show_story()
 
 
+
+
 # Show the start screen
 start_screen()
 
 quit = False
 
 while not quit:
-    # add music
+    # Load the music and sounds
     pygame.mixer.music.load("music/game_bgm.mp3")
+
+    # Set the number of channels
+    pygame.mixer.set_num_channels(10)  # default is 8
+
+    # Play the sounds on different channels
+    bgm_channel = pygame.mixer.Channel(0)
+    running_channel = pygame.mixer.Channel(1)
+
+    bgm_channel.play(pygame.mixer.Sound('music/game_bgm.mp3'))
+
+    # Set volumes
+    bgm_channel.set_volume(0.1)  # Set the background music to 50% volume
+
+    # If you want to control the volume of the music being played by pygame.mixer.music
+    pygame.mixer.music.set_volume(0.3)  # Set the music volume to 30%
+
     pygame.mixer.music.play(0)
     sky = pygame.image.load('images/bg/sky.png').convert_alpha()
     num_bg_tiles = math.ceil(game_width / sky.get_width()) + 1
@@ -123,6 +172,8 @@ while not quit:
     # create the obstacle
     obstacles_group = pygame.sprite.Group()
     obstacle = Obstacle.Obstacle()
+    laser_grid = LaserGrid(x=game_width, y=200, width=100, height=10, on_time=60, off_time=60)
+    obstacles_group.add(laser_grid)
     obstacles_group.add(obstacle)
 
     # load the heart images for representing health
@@ -196,7 +247,7 @@ while not quit:
             if score % 2 == 0 and speed < 10:
                 speed += 1
 
-        # check if player collides with the obstacle
+        # Handle collisions between player and obstacles
         if pygame.sprite.spritecollide(player, obstacles_group, True, pygame.sprite.collide_mask):
             player.health -= 1
             player.invincibility_frame = 30
@@ -204,6 +255,7 @@ while not quit:
             # remove obstacle and replace with a new one
             obstacles_group.remove(obstacle)
             obstacle = Obstacle.Obstacle()
+            obstacles_group.add(laser_grid)
             obstacles_group.add(obstacle)
 
         # display a heart per remaining health
