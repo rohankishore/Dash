@@ -3,7 +3,7 @@ import math
 import pygame
 from pygame.locals import *
 
-import Obstacle
+from dash import Obstacle
 import Player
 
 pygame.init()
