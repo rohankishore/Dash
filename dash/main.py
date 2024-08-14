@@ -18,7 +18,7 @@ pygame.display.set_caption('Dash')
 score = 0
 speed = 3
 obstacles_cleared = 0  # Counter for obstacles cleared
-level = 1  # Start with level 1
+level = 1  # Start with level.txt 1
 
 start_screen_image = pygame.image.load("images/bg/banner.png").convert_alpha()
 start_screen_image = pygame.transform.scale(start_screen_image, (game_width, game_height))
@@ -183,8 +183,8 @@ while not quit:
 
             # Show the board image every 10 obstacles cleared
             if obstacles_cleared % 10 == 0:
-                level += 1  # Increase the level
-                show_board(level)  # Pass the current level to the function
+                level += 1  # Increase the level.txt
+                show_board(level)  # Pass the current level.txt to the function
 
         # Handle collisions between player and obstacles
         if pygame.sprite.spritecollide(player, obstacles_group, True, pygame.sprite.collide_mask):
@@ -211,7 +211,7 @@ while not quit:
         if heart_sprite_index >= len(heart_sprites):
             heart_sprite_index = 0
 
-        # Display the score and level
+        # Display the score and level.txt
         black = (0, 0, 0)
         white = "#FFFFFF"
         font = pygame.font.Font(pygame.font.get_default_font(), 16)
@@ -252,7 +252,7 @@ while not quit:
                         speed = 3
                         score = 0
                         obstacles_cleared = 0  # Reset the counter
-                        level = 1  # Reset the level
+                        level = 1  # Reset the level.txt
                         player = Player.Player()
                         obstacle = Obstacle.Obstacle()
                         obstacles_group.empty()
