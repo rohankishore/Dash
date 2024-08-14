@@ -34,6 +34,7 @@ try:
 
 except ValueError:
     score = 0
+
 speed = 3 + (level*5)
 
 start_screen_image = pygame.image.load("images/bg/banner.png").convert_alpha()
@@ -285,9 +286,19 @@ while not quit:
                         pygame.mixer.music.play(0)
                         gameover = False
                         speed = 3 + (level*0.2)
-                        score = 0
+                        try:
+                            with open("data/score.txt", "r") as score_file:
+                                score = int(score_file.read())
+
+                        except ValueError:
+                            score = 0
                         obstacles_cleared = 0  # Reset the counter
-                        level = level  # Reset the level.txt
+                        try:
+                            with open("data/level.txt", "r") as level_file:
+                                level = int(level_file.read())
+
+                        except ValueError:
+                            level = 1
                         obstacles_to_next_level = 10  # Reset obstacles required for next level.txt
                         player = Player.Player()
                         obstacle = Obstacle.Obstacle()
