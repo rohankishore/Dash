@@ -27,6 +27,7 @@ except ValueError:
     level = 1
 
 obstacles_to_next_level = 2  # Initial number of obstacles to level.txt up
+base_obstacles = 10
 
 start_screen_image = pygame.image.load("images/bg/banner.png").convert_alpha()
 start_screen_image = pygame.transform.scale(start_screen_image, (game_width, game_height))
@@ -202,7 +203,9 @@ while not quit:
                     print(e)
                 show_board(level)  # Pass the current level to the function
                 obstacles_cleared = 0  # Reset the obstacle counter
-                obstacles_to_next_level += 5  # Increase the number of obstacles needed for the next level
+                obstacles_to_next_level = (2 + int(math.log(level + 1,
+                                                            2))) * 2  # Increase the number of obstacles needed for the next level logarithmically
+                print(obstacles_to_next_level)
 
         # Handle collisions between player and obstacles
         if pygame.sprite.spritecollide(player, obstacles_group, True, pygame.sprite.collide_mask):
