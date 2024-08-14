@@ -19,11 +19,12 @@ score = 0
 speed = 3
 obstacles_cleared = 0  # Counter for obstacles cleared
 
-with open("data/level.txt", "r") as level_file:
-    level = int(level_file.read())
+try:
+    with open("data/level.txt", "r") as level_file:
+        level = int(level_file.read())
 
-    if level == "":
-        level = 1
+except ValueError:
+    level = 1
 
 obstacles_to_next_level = 2  # Initial number of obstacles to level.txt up
 
