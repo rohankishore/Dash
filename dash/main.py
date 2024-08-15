@@ -91,11 +91,11 @@ def open_settings_menu():
     text_rect = text.get_rect(center=(game_width / 2, game_height / 2))
     game.blit(text, text_rect)
 
-    settings_icon = pygame.image.load("images/icons/settings.png").convert_alpha()
-    settings_icon = pygame.transform.scale(settings_icon, (50, 50))
-    settings_rect = settings_icon.get_rect()
-    settings_rect.topleft = (20, 20)
-    game.blit(settings_icon, settings_rect)
+    back_icon = pygame.image.load("images/icons/settings.png").convert_alpha()
+    back_icon = pygame.transform.scale(back_icon, (50, 50))
+    back_rect = back_icon.get_rect()
+    back_rect.topleft = (20, 20)
+    game.blit(back_icon, back_rect)
 
     pygame.display.update()
 
@@ -108,6 +108,13 @@ def open_settings_menu():
                 exit()
             if event.type == KEYDOWN and event.key == K_ESCAPE:
                 waiting = False
+
+            waiting = True
+
+            if event.type == MOUSEBUTTONDOWN:
+                if back_rect.collidepoint(event.pos):
+                    # Call the settings menu function
+                    start_screen()
 
 def show_board(level):
     font = pygame.font.Font(pygame.font.get_default_font(), 48)
