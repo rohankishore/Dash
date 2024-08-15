@@ -57,9 +57,16 @@ def start_screen():
     text_rect = text.get_rect(center=(game_width / 2, game_height - 50))
     game.blit(text, text_rect)
 
+    # Load and display the settings icon
+    settings_icon = pygame.image.load("images/icons/settings.png").convert_alpha()
+    settings_icon = pygame.transform.scale(settings_icon, (50, 50))
+    settings_rect = settings_icon.get_rect()
+    settings_rect.topleft = (20, 20)  # Position it in the top-left corner
+    game.blit(settings_icon, settings_rect)
+
     pygame.display.update()
 
-    # Wait for the player to press a key
+    # Wait for the player to press a key or click the settings button
     waiting = True
     while waiting:
         for event in pygame.event.get():
@@ -67,9 +74,15 @@ def start_screen():
                 pygame.quit()
                 exit()
             if event.type == KEYDOWN:
-                pygame.mixer.music.stop()  # stop the music playback
-                pygame.mixer.music.unload()  # unload music from mixer
+                pygame.mixer.music.stop()  # Stop the music playback
+                pygame.mixer.music.unload()  # Unload music from mixer
                 waiting = False
+            if event.type == MOUSEBUTTONDOWN:
+                if settings_rect.collidepoint(event.pos):
+                    # Call the settings menu function
+                    open_settings_menu()
+
+
 
 
 def show_board(level):
