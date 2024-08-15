@@ -81,10 +81,12 @@ def start_screen():
             if event.type == QUIT:
                 pygame.quit()
                 exit()
+
             if event.type == KEYDOWN:
                 pygame.mixer.music.stop()  # Stop the music playback
                 pygame.mixer.music.unload()  # Unload music from mixer
                 waiting = False
+
             if event.type == MOUSEBUTTONDOWN:
                 if settings_rect.collidepoint(event.pos):
                     open_settings_menu()
@@ -129,6 +131,10 @@ def open_settings_menu():
 
 def open_github_repo():
     link = "https://github.com/rohankishore/Dash"
+    webbrowser.open_new_tab(link)
+
+def open_kofi():
+    link = ""
     webbrowser.open_new_tab(link)
 
 def show_board(level):
