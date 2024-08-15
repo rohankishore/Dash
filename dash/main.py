@@ -83,7 +83,31 @@ def start_screen():
                     open_settings_menu()
 
 
+def open_settings_menu():
+    # Display the settings screen (placeholder)
+    game.fill((0, 0, 0))
+    font = pygame.font.Font(pygame.font.get_default_font(), 32)
+    text = font.render('Settings Menu', True, (255, 255, 255))
+    text_rect = text.get_rect(center=(game_width / 2, game_height / 2))
+    game.blit(text, text_rect)
 
+    settings_icon = pygame.image.load("images/icons/settings.png").convert_alpha()
+    settings_icon = pygame.transform.scale(settings_icon, (50, 50))
+    settings_rect = settings_icon.get_rect()
+    settings_rect.topleft = (20, 20)
+    game.blit(settings_icon, settings_rect)
+
+    pygame.display.update()
+
+    # Wait for the player to press ESC to go back
+    waiting = True
+    while waiting:
+        for event in pygame.event.get():
+            if event.type == QUIT:
+                pygame.quit()
+                exit()
+            if event.type == KEYDOWN and event.key == K_ESCAPE:
+                waiting = False
 
 def show_board(level):
     font = pygame.font.Font(pygame.font.get_default_font(), 48)
