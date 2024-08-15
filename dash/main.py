@@ -77,6 +77,7 @@ def start_screen():
     # Wait for the player to press a key or click the settings button
     waiting = True
     while waiting:
+
         for event in pygame.event.get():
             if event.type == QUIT:
                 pygame.quit()
