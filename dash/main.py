@@ -1,4 +1,6 @@
 import math
+import webbrowser
+
 import pygame
 from pygame.locals import *
 
@@ -64,7 +66,7 @@ def start_screen():
     settings_rect.topleft = (20, 20)  # Position it in the top-left corner
     game.blit(settings_icon, settings_rect)
 
-    github_icon = pygame.image.load("images/icons/settings.png").convert_alpha()
+    github_icon = pygame.image.load("images/icons/github.png").convert_alpha()
     github_icon = pygame.transform.scale(github_icon, (50, 50))
     github_rect = github_icon.get_rect()
     github_rect.topright = (980, 20)  # Position it in the top-left corner
@@ -85,8 +87,11 @@ def start_screen():
                 waiting = False
             if event.type == MOUSEBUTTONDOWN:
                 if settings_rect.collidepoint(event.pos):
-                    # Call the settings menu function
                     open_settings_menu()
+
+            if event.type == MOUSEBUTTONDOWN:
+                if github_rect.collidepoint(event.pos):
+                    open_github_repo()
 
 
 def open_settings_menu():
@@ -121,6 +126,10 @@ def open_settings_menu():
                 if back_rect.collidepoint(event.pos):
                     # Call the settings menu function
                     start_screen()
+
+def open_github_repo():
+    link = "https://github.com/rohankishore/Dash"
+    webbrowser.open_new_tab(link)
 
 def show_board(level):
     font = pygame.font.Font(pygame.font.get_default_font(), 48)
