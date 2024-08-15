@@ -11,11 +11,14 @@
 # Overview
 - Infinite scrolling
 - Two types of obstacles (planning to add drones)
+- Level system
 
 # Game Screenshots
 
-![image](https://github.com/user-attachments/assets/6449af85-6f4b-4714-899e-f4022515fbef)
-![image](https://github.com/user-attachments/assets/b60b6749-fea9-44b2-b55d-00dd890ea346)
+![image](https://github.com/user-attachments/assets/db30b8a5-3e8f-47c4-952d-2798505bbf7a)
+![image](https://github.com/user-attachments/assets/7d9e9a76-208e-4c7f-8cb6-e5537e178854)
+![image](https://github.com/user-attachments/assets/683deb09-53cd-49b8-8560-0fec941a4564)
+
 
 # How to Play?
 
