@@ -44,8 +44,9 @@ python main.py
 
 # Roadmap
 - Implement drone obstacles
+- Add extra sound and effects
 - <strike> Add music </strike>
-- Add difficulty levels
+- <strike> Add levels </strike>
 
 # Credits
 - Intro Music: https://youtu.be/V5OEjMHo_B4?si=ViW57E_VrmN51i9Q
