@@ -72,11 +72,11 @@ def start_screen():
     github_rect.topright = (980, 20)  # Position it in the top-left corner
     game.blit(github_icon, github_rect)
 
-    kofi_icon = pygame.image.load("images/icons/github.png").convert_alpha()
-    github_icon = pygame.transform.scale(github_icon, (50, 50))
-    github_rect = github_icon.get_rect()
-    github_rect.topright = (980, 20)  # Position it in the top-left corner
-    game.blit(github_icon, github_rect)
+    kofi_icon = pygame.image.load("images/icons/kofi.png").convert_alpha()
+    kofi_icon = pygame.transform.scale(kofi_icon, (50, 50))
+    kofi_rect = kofi_icon.get_rect()
+    kofi_rect.topright = (985, 90)  # Position it in the top-right corner
+    game.blit(kofi_icon, kofi_rect)
 
     pygame.display.update()
 
