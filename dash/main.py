@@ -64,6 +64,12 @@ def start_screen():
     settings_rect.topleft = (20, 20)  # Position it in the top-left corner
     game.blit(settings_icon, settings_rect)
 
+    github_icon = pygame.image.load("images/icons/settings.png").convert_alpha()
+    github_icon = pygame.transform.scale(github_icon, (50, 50))
+    github_rect = github_icon.get_rect()
+    github_rect.topright = (980, 20)  # Position it in the top-left corner
+    game.blit(github_icon, github_rect)
+
     pygame.display.update()
 
     # Wait for the player to press a key or click the settings button
@@ -91,7 +97,7 @@ def open_settings_menu():
     text_rect = text.get_rect(center=(game_width / 2, game_height / 2))
     game.blit(text, text_rect)
 
-    back_icon = pygame.image.load("images/icons/settings.png").convert_alpha()
+    back_icon = pygame.image.load("images/icons/back.png").convert_alpha()
     back_icon = pygame.transform.scale(back_icon, (50, 50))
     back_rect = back_icon.get_rect()
     back_rect.topleft = (20, 20)
