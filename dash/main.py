@@ -102,6 +102,10 @@ def start_screen():
                 if github_rect.collidepoint(event.pos):
                     open_github_repo()
 
+            if event.type == MOUSEBUTTONDOWN:
+                if kofi_rect.collidepoint(event.pos):
+                    open_kofi()
+
 
 def open_settings_menu():
     # Display the settings screen (placeholder)
@@ -141,7 +145,7 @@ def open_github_repo():
     webbrowser.open_new_tab(link)
 
 def open_kofi():
-    link = ""
+    link = "https://ko-fi.com/rohankishore"
     webbrowser.open_new_tab(link)
 
 def show_board(level):
