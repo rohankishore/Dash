@@ -72,6 +72,12 @@ def start_screen():
     github_rect.topright = (980, 20)  # Position it in the top-left corner
     game.blit(github_icon, github_rect)
 
+    kofi_icon = pygame.image.load("images/icons/github.png").convert_alpha()
+    github_icon = pygame.transform.scale(github_icon, (50, 50))
+    github_rect = github_icon.get_rect()
+    github_rect.topright = (980, 20)  # Position it in the top-left corner
+    game.blit(github_icon, github_rect)
+
     pygame.display.update()
 
     # Wait for the player to press a key or click the settings button
