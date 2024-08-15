@@ -18,6 +18,7 @@
 ![image](https://github.com/user-attachments/assets/db30b8a5-3e8f-47c4-952d-2798505bbf7a)
 ![image](https://github.com/user-attachments/assets/7d9e9a76-208e-4c7f-8cb6-e5537e178854)
 ![image](https://github.com/user-attachments/assets/683deb09-53cd-49b8-8560-0fec941a4564)
+![image](https://github.com/user-attachments/assets/04754bad-5ad2-455a-8036-265218481779)
 
 
 # How to Play?
